@@ -1,44 +1,63 @@
-# https://linuxhandbook.com/ansible-apt-module/
 - name: unifi controller
   hosts: unifi-controllers
   tasks:
-    - name: update apt cache
-      ansible.builtin.apt:
-        update_cache: yes
-      become: true
+    - name: prerequisites
+      block:
+        - name:
+          ansible.builtin.apt:
+            update_cache: yes
+          become: true
 
-    - name: install apt prerequisites
-      ansible.builtin.apt:
-        name:
-          - ca-certificates
-          - apt-transport-https
-        state: present
-      become: true
+        - name: install apt prerequisites
+          ansible.builtin.apt:
+            name:
+              - ca-certificates
+              - apt-transport-https
+            state: present
+          become: true
 
-    - name: import mongo apt key
-      apt_key:
-        url: https://pgp.mongodb.com/server-7.0.asc
-        keyring: /etc/apt/trusted.gpg.d/mongo-7.gpg
-        state: present
-      become: true
+    - name: mongo
+      block:
+        - name: apt key
+          apt_key:
+            url: https://pgp.mongodb.com/server-7.0.asc
+            keyring: /etc/apt/trusted.gpg.d/mongo-7.gpg
+            state: present
+          become: true
 
-    - name: install mongo deb repository
-      apt_repository:
-        repo: deb [ arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/mongo-7.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse
-        state: present
-        update_cache: yes
-      become: true
+        - name: deb repository
+          apt_repository:
+            repo: deb [ arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/mongo-7.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse
+            state: present
+            update_cache: yes
+          become: true
 
-    - name: install mongo
-      ansible.builtin.apt:
-        name: mongodb-org
-        state: present
-      become: true
+        - name: install
+          ansible.builtin.apt:
+            name: mongodb-org
+            state: present
+          become: true
 
+    - name: unifi
+      block:
+        - name: apt key
+          apt_key:
+            url: https://dl.ui.com/unifi/unifi-repo.gpg
+            keyring: /etc/apt/trusted.gpg.d/unifi-repo.gpg
+            state: present
+          become: true
 
-# apt install unifi
-# https://linuxhandbook.com/ansible-apt-module/
+        - name: deb repository
+          apt_repository:
+            repo: deb [ arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/unifi-repo.gpg] https://www.ui.com/downloads/unifi/debian stable ubiquiti
+            state: present
+            update_cache: yes
+          become: true
 
-# snap install microk8s
-# configure it
-# https://docs.ansible.com/ansible/latest/collections/community/general/snap_module.html#examples
+        - name: install
+          ansible.builtin.apt:
+            name: unifi
+            state: present
+          become: true
+
+# TODO: print out the URL to visit to config

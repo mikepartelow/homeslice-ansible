@@ -48,10 +48,3 @@
             cmd: "netplan apply"
       when: static_ip is defined
       become: yes
-
-
-
-
-#  22  sudo chmod 600 /etc/netplan/01-netcfg.yaml
-#    23  $ sudo netplan apply
-#    24  sudo netplan apply

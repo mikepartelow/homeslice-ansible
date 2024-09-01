@@ -1,0 +1,14 @@
+# credit: https://github.com/istvano/ansible_role_microk8s
+- name: microk8s
+  hosts: all
+  gather_facts: False
+  vars:
+    rcpath: "/home/{{ansible_user}}/.bashrc"
+  tasks:
+    - name: shellrc
+      blockinfile:
+        path: "{{ rcpath }}"
+        block: |
+          export EDITOR=vim
+        state: present
+        create: true

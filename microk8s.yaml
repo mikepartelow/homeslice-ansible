@@ -83,15 +83,3 @@
         - name: announce
           ansible.builtin.debug:
             msg: "microk8s config at {{path_to_microk8s_config}}"
-
-          # delegate_to: localhost
-      #       - name: create kubectl config
-  # become: yes
-  # changed_when: true
-  # shell: microk8s config > {{ user_info_dict[user]['home'] }}/.kube/config
-  # args:
-  #   executable: /bin/bash
-  # with_items: '{{ users }}'
-  # loop_control:
-  #   loop_var: user
-  #   label: '{{ user }}'

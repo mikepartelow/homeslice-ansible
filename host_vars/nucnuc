@@ -5,3 +5,10 @@ microk8s_addons:
   hostpath-storage: true
   ingress: true
   # registry: --size=40Gi
+static_ip:
+  addr: 192.168.64.6
+  iface: enp1s0
+  route: 192.168.1.1
+  nameservers:
+    - 127.0.0.53
+    - 192.168.1.8

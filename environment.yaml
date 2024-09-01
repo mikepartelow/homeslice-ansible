@@ -24,3 +24,34 @@
       become: true
       community.general.timezone:
         name: "{{timezone}}"
+    - name: static ip
+      block:
+        - name: config
+          copy:
+            dest: "/etc/netplan/01-netcfg.yaml"
+            content: |
+              network:
+                version: 2
+                renderer: networkd
+                ethernets:
+                  {{static_ip.iface}}:
+                    dhcp4: no
+                    addresses:
+                      - {{static_ip.addr}}/24
+                    routes:
+                      - to: default
+                        via: {{static_ip.route}}
+                    nameservers:
+                      addresses: {{static_ip.nameservers|replace("'","")|replace(' ','') }}
+        - name: apply
+          command:
+            cmd: "netplan apply"
+      when: static_ip is defined
+      become: yes
+
+
+
+
+#  22  sudo chmod 600 /etc/netplan/01-netcfg.yaml
+#    23  $ sudo netplan apply
+#    24  sudo netplan apply

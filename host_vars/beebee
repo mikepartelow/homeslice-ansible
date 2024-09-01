@@ -2,9 +2,7 @@
 microk8s_addons:
   dns: "dns:127.0.0.53,192.168.1.8,192.168.1.1"
   helm3: true
-  hostpath-storage: true
   ingress: true
-  # registry: --size=40Gi
 static_ip:
   addr: "{{ansible_ssh_host}}"
   iface: enp1s0

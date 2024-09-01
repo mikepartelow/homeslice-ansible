@@ -1,0 +1,3 @@
+- import_playbook: playbooks/environment.yaml
+- import_playbook: playbooks/unifi-controller.yaml
+- import_playbook: playbooks/microk8s.yaml

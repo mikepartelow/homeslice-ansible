@@ -12,3 +12,15 @@
           export EDITOR=vim
         state: present
         create: true
+    - name: etc_hosts
+      blockinfile:
+        path: "/etc/hosts"
+        block: |
+          {{registry_localdomain_ip_addr}} registry.localdomain
+        state: present
+        create: true
+      become: true
+    - name: timezone
+      become: true
+      community.general.timezone:
+        name: "{{timezone}}"

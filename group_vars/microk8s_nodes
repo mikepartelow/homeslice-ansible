@@ -1,0 +1,4 @@
+---
+microk8s_channel: 1.31/stable
+microk8s_users:
+  - ubuntu

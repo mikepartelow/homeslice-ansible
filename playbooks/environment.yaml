@@ -10,6 +10,7 @@
         path: "{{ rcpath }}"
         block: |
           export EDITOR=vim
+          export PS1='[\t]:(\u@\h):[\W] $ '
         state: present
         create: true
     - name: /etc/hosts registry.localdomain

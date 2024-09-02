@@ -1,5 +1,5 @@
 - name: unifi controller
-  hosts: unifi-controllers
+  hosts: unifi_controllers
   tasks:
     - name: prerequisites
       block:

@@ -3,7 +3,7 @@
   hosts: microk8s_nodes
   vars:
     wait_for_microk8s_command: /snap/bin/microk8s.status --wait-ready
-    path_to_microk8s_config: ./microk8s.config
+    path_to_microk8s_config: ./{{ inventory_hostname_short }}.microk8s.config
   tasks:
     - name: install
       block:
@@ -69,6 +69,12 @@
             - item.status == 'enabled'
             - item.name in microk8s_addons
             - not microk8s_addons[item.name]
+    - name: node labels
+      loop: "{{ microk8s_node_labels }}"
+      loop_control:
+        label: "{{ item }}"
+      command:
+        cmd: "/snap/bin/microk8s.kubectl label nodes {{ inventory_hostname_short }} '{{ item }}'"
 
     - name: microk8s config
       block:

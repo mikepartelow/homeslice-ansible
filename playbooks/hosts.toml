@@ -1,0 +1,4 @@
+server = "http://registry.localdomain:32000"
+
+[host."http://registry.localdomain:32000"]
+capabilities = ["pull", "resolve"]

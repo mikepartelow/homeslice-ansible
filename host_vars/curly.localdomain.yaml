@@ -1,10 +1,7 @@
 ---
 microk8s_addons:
-  dns: "dns:127.0.0.53,192.168.1.8,192.168.1.1"
   helm3: true
   ingress: true
-  hostpath-storage: true
-  registry: --size=40Gi
 static_ip:
   addr: "{{ansible_ssh_host}}"
   iface: enp1s0
@@ -12,5 +9,3 @@ static_ip:
   nameservers:
     - 127.0.0.53
     - 192.168.1.8
-microk8s_node_labels:
-  - "homeslice/homebridge=true"

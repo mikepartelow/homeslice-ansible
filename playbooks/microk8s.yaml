@@ -69,12 +69,26 @@
             - item.status == 'enabled'
             - item.name in microk8s_addons
             - not microk8s_addons[item.name]
+
     - name: node labels
       loop: "{{ microk8s_node_labels }}"
       loop_control:
         label: "{{ item }}"
       command:
         cmd: "/snap/bin/microk8s.kubectl label nodes {{ inventory_hostname_short }} '{{ item }}'"
+
+    - name: registry config
+      block:
+        - name: mkdir
+          file:
+            path: /var/snap/microk8s/current/args/certs.d/registry.localdomain:32000/
+            state: directory
+          become: true
+        - name: config
+          template:
+            src: hosts.toml
+            dest: /var/snap/microk8s/current/args/certs.d/registry.localdomain:32000/hosts.toml
+          become: true
 
     - name: microk8s config
       block:

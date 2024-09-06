@@ -1,7 +1,4 @@
 ---
-microk8s_addons:
-  helm3: true
-  ingress: true
 static_ip:
   addr: "{{ansible_ssh_host}}"
   iface: eno1

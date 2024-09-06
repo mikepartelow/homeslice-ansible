@@ -69,6 +69,8 @@
             - item.status == 'enabled'
             - item.name in microk8s_addons
             - not microk8s_addons[item.name]
+      when:
+        - microk8s_addons is defined
 
     - name: node labels
       loop: "{{ microk8s_node_labels }}"

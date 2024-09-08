@@ -1,0 +1,19 @@
+---
+microk8s_addons:
+  dns: true
+  helm3: true
+  ingress: true
+  openebs: true
+  # hostpath-storage: true
+  # registry: --size=40Gi
+# static_ip:
+#   addr: "{{ansible_ssh_host}}"
+#   iface: enp1s0
+#   route: 192.168.1.1
+#   nameservers:
+#     - 127.0.0.53
+#     - 192.168.1.8
+microk8s_node_labels:
+  - "homeslice/homebridge=true"
+  - "homeslice/unifi=true"
+microk8s_community_addons: true

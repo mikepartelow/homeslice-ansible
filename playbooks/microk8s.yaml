@@ -34,6 +34,13 @@
 
     - name: addons
       block:
+        - name: enable community addons
+          become: yes
+          command:
+            cmd: "/snap/bin/microk8s.enable community"
+          when:
+            - microk8s_community_addons is defined
+
         - name: get current addons state
           become: yes
           command:
@@ -46,6 +53,17 @@
           set_fact:
             microk8s_status: "{{ microk8s_status.stdout | from_yaml }}"
 
+        - name: openebs prereq
+          # doesn't work in multipass, may work on real ubuntu
+          # ansible.builtin.systemd_service:
+          #   name: iscsid
+          #   enabled: true
+          command:
+            cmd: "sudo systemctl enable iscsid"
+          when:
+            - '"openebs" in microk8s_addons'
+            - microk8s_addons["openebs"]
+
         - name: enable addons
           become: yes
           loop: "{{ microk8s_status.addons }}"
@@ -57,6 +75,13 @@
             - item.status == 'disabled'
             - item.name in microk8s_addons
             - microk8s_addons[item.name]
+
+        - name: openebs postreq
+          command:
+            cmd: "/snap/bin/microk8s.kubectl patch storageclass openebs-hostpath -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
+          when:
+            - '"openebs" in microk8s_addons'
+            - microk8s_addons["openebs"]
 
         - name: disable addons
           become: yes
@@ -97,6 +122,7 @@
         - name: read
           command: /snap/bin/microk8s.config
           register: microk8s_config_output
+          become: true
         - name: write
           local_action:
             module: copy

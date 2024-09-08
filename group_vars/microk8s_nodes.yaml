@@ -1,6 +1,6 @@
 ---
 microk8s_channel: 1.30/stable
 microk8s_users:
-#  - mp
-  - ubuntu
+ - mp
+  # - ubuntu
 microk8s_node_labels: []

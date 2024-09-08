@@ -1,9 +1,10 @@
 ---
 microk8s_addons:
+  openebs: true
   dns: true
   helm3: true
   ingress: true
-  hostpath-storage: true
+  # hostpath-storage: true
   registry: --size=40Gi
 static_ip:
   addr: "{{ansible_ssh_host}}"
@@ -15,3 +16,4 @@ static_ip:
 microk8s_node_labels:
   - "homeslice/homebridge=true"
   - "homeslice/unifi=true"
+microk8s_community_addons: true

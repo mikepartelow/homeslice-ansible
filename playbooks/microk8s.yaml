@@ -54,12 +54,13 @@
             microk8s_status: "{{ microk8s_status.stdout | from_yaml }}"
 
         - name: openebs prereq
-          # doesn't work in multipass, may work on real ubuntu
+          # doesn't work in multipass or on real ubuntu - times out due to sudo weirdness
           # ansible.builtin.systemd_service:
           #   name: iscsid
           #   enabled: true
           command:
-            cmd: "sudo systemctl enable iscsid"
+            cmd: "systemctl enable iscsid"
+          become: true
           when:
             - '"openebs" in microk8s_addons'
             - microk8s_addons["openebs"]

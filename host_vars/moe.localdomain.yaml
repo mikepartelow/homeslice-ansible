@@ -1,9 +1,10 @@
 ---
 microk8s_addons:
-  openebs: true
+  openebs: false
   dns: true
   helm3: true
   ingress: true
+  metrics-server: true
   # hostpath-storage: true
   registry: --size=40Gi
 static_ip:
